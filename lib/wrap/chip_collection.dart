@@ -18,7 +18,6 @@ class _ChipCollectionState extends State<ChipCollection> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     currentList = widget.initialValue;
   }
@@ -58,11 +57,11 @@ class ChipInfo extends Object {
 
 class ChipWidget extends StatefulWidget {
   final ChipInfo chip;
-  final void Function(ChipInfo)? onPress;
+  final void Function(ChipInfo) onPress;
 
   ChipWidget(
     this.chip, {
-    this.onPress,
+    required this.onPress,
   });
 
   @override
@@ -79,7 +78,7 @@ class _ChipWidgetState extends State<ChipWidget> {
           widget.chip.isChecked = !widget.chip.isChecked;
         });
         if (widget.onPress != null) {
-          widget.onPress!(widget.chip);
+          widget.onPress(widget.chip);
         }
       },
       child: Container(
