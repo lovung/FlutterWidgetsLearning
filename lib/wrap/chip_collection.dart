@@ -5,8 +5,8 @@ class ChipCollection extends StatefulWidget {
   final void Function(List<ChipInfo>) onChanged;
 
   ChipCollection({
-    required this.initialValue,
-    required this.onChanged,
+    @required this.initialValue,
+    @required this.onChanged,
   });
 
   @override
@@ -49,8 +49,8 @@ class ChipInfo extends Object {
   bool isChecked;
 
   ChipInfo({
-    required this.id,
-    required this.title,
+    @required this.id,
+    @required this.title,
     this.isChecked = false,
   });
 }
@@ -61,7 +61,7 @@ class ChipWidget extends StatefulWidget {
 
   ChipWidget(
     this.chip, {
-    required this.onPress,
+    @required this.onPress,
   });
 
   @override

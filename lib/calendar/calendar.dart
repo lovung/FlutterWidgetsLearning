@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widgets_learning/calendar/day_widget.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Calendar extends StatefulWidget {
-  @override
-  _CalendarState createState() => _CalendarState();
-}
+final pickedDateProvider =
+    StateProvider<DateTime>((ref) => removeTime(DateTime.now()));
 
-class _CalendarState extends State<Calendar> {
-  DateTime pickedDate = DateTime.now();
-  DateTime isPicked = DateTime.now();
-
-  void onPickedCallback(DateTime b) {
-    setState(() {
-      isPicked = b;
-    });
+class Calendar extends StatelessWidget {
+  List<Widget> _buildChildren(BuildContext context, DateTime date) {
+    List<Widget> list = [];
+    for (int i = 0; i < 10; i++) {
+      final newDate = removeTime(DateTime.now().add(Duration(days: i)));
+      list.add(DayWidget(
+        date: newDate,
+        onPicked: (b) => context.read(pickedDateProvider).state = b,
+      ));
+    }
+    list.add(Text("$date"));
+    return list;
   }
 
   @override
@@ -22,36 +26,21 @@ class _CalendarState extends State<Calendar> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              DayWidget(
-                date: DateTime.now(),
-                onPicked: onPickedCallback,
-              ),
-              DayWidget(
-                date: DateTime.now().add(Duration(days: 1)),
-                onPicked: onPickedCallback,
-              ),
-              DayWidget(
-                date: DateTime.now().add(Duration(days: 2)),
-                onPicked: onPickedCallback,
-              ),
-              DayWidget(
-                date: DateTime.now().add(Duration(days: 3)),
-                onPicked: onPickedCallback,
-                isPicked: true,
-              ),
-              DayWidget(
-                date: DateTime.now().add(Duration(days: 4)),
-                onPicked: onPickedCallback,
-                isEnabled: false,
-              ),
-              Text("$isPicked"),
-            ],
+          child: Consumer(
+            builder: (context, watch, _) {
+              final date = watch(pickedDateProvider).state;
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: _buildChildren(context, date),
+              );
+            },
           ),
         ),
       ),
     );
   }
+}
+
+DateTime removeTime(DateTime input) {
+  return DateTime(input.year, input.month, input.day);
 }

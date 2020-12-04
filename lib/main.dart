@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widgets_learning/calendar/calendar.dart';
-import 'package:flutter_widgets_learning/page_view/page_view.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:overlay_support/overlay_support.dart';
 
@@ -8,14 +8,14 @@ import 'package:flutter_widgets_learning/page_view/page_view.dart';
 
 void main() {
   runApp(
-    MyApp(),
+    // MyApp(),
     // Adding ProviderScope enables Riverpod for the entire project
-    // const ProviderScope(child: MyApp()),
+    const ProviderScope(child: MyApp()),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

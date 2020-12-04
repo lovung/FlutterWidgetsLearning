@@ -1,63 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_widgets_learning/calendar/calendar.dart';
 
-class DayWidget extends StatefulWidget {
+class DayWidget extends StatelessWidget {
   final DateTime date;
   final bool isEnabled;
-  final bool isPicked;
+  // final bool isPicked;
   final ValueChanged<DateTime> onPicked;
-
-  DayWidget({
-    required this.date,
-    this.isEnabled = true,
-    this.isPicked = false,
-    required this.onPicked,
-  }) : assert(isEnabled || !isPicked);
-
-  @override
-  _DayWidgetState createState() => _DayWidgetState();
-}
-
-class _DayWidgetState extends State<DayWidget> {
-  bool isPicked = false;
   final activeColor = Colors.orangeAccent;
 
-  @override
-  void initState() {
-    isPicked = widget.isPicked;
-    super.initState();
-  }
+  DayWidget({
+    @required this.date,
+    this.isEnabled = true,
+    @required this.onPicked,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final bool isPicked = date == context.read(pickedDateProvider).state;
     return SizedBox(
       height: 50,
       width: 44,
       child: Container(
         padding: EdgeInsets.all(5),
         decoration: BoxDecoration(
-          color: widget.isEnabled && isPicked ? activeColor : Colors.white,
+          color: isEnabled && isPicked ? activeColor : Colors.white,
           border: Border.all(
-            color: widget.isEnabled && isPicked ? activeColor : Colors.white,
+            color: isEnabled && isPicked ? activeColor : Colors.white,
           ),
           borderRadius: BorderRadius.all(Radius.circular(12)),
         ),
         child: InkWell(
           onTap: () {
-            if (!widget.isEnabled) {
+            if (!isEnabled) {
               return;
             }
-            setState(() {
-              isPicked = !isPicked;
-            });
-            if (isPicked) {
-              widget.onPicked(widget.date);
-            }
+            onPicked(date);
           },
           child: Center(
             child: Text(
-              "${widget.date.day}",
+              "${date.day}",
               style: TextStyle(
-                color: widget.isEnabled ? Colors.black : Colors.black12,
+                color: isEnabled ? Colors.black : Colors.black12,
                 fontWeight: FontWeight.w700,
                 fontSize: 14,
               ),

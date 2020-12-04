@@ -33,7 +33,7 @@ class MyPage extends StatelessWidget {
   // final double number;
 
   MyPage({
-    required this.color,
+    @required this.color,
     // @required this.number,
   });
 
