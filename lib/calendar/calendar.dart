@@ -13,7 +13,6 @@ class Calendar extends StatelessWidget {
       final newDate = removeTime(DateTime.now().add(Duration(days: i)));
       list.add(DayWidget(
         date: newDate,
-        onPicked: (b) => context.read(pickedDateProvider).state = b,
       ));
     }
     list.add(Text("$date"));

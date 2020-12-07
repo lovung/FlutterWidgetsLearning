@@ -5,14 +5,11 @@ import 'package:flutter_widgets_learning/calendar/calendar.dart';
 class DayWidget extends StatelessWidget {
   final DateTime date;
   final bool isEnabled;
-  // final bool isPicked;
-  final ValueChanged<DateTime> onPicked;
   final activeColor = Colors.orangeAccent;
 
   DayWidget({
     @required this.date,
     this.isEnabled = true,
-    @required this.onPicked,
   });
 
   @override
@@ -35,7 +32,7 @@ class DayWidget extends StatelessWidget {
             if (!isEnabled) {
               return;
             }
-            onPicked(date);
+            context.read(pickedDateProvider).state = date;
           },
           child: Center(
             child: Text(
