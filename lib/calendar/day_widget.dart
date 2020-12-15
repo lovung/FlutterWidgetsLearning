@@ -14,7 +14,7 @@ class DayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isPicked = date == context.read(pickedDateProvider).state;
+    final bool isPicked = (date == context.read(pickedDateProvider).state);
     return SizedBox(
       height: 50,
       width: 44,

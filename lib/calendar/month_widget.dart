@@ -24,7 +24,7 @@ class MonthWidget extends StatelessWidget {
 
   List<Widget> _buildChildren(BuildContext context) {
     final int daysOfPreviousMonth = _firstDate.weekday - DateTime.monday;
-    final int daysOfNextMonth = DateTime.daysPerWeek - _lastDate.weekday;
+    final int daysOfNextMonth = DateTime.sunday - _lastDate.weekday;
     List<Widget> list = [];
     final DateTime _startDate =
         _firstDate.subtract(Duration(days: daysOfPreviousMonth));
