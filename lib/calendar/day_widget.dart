@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_widgets_learning/calendar/calendar.dart';
+import 'package:flutter_widgets_learning/calendar/state.dart';
 
 class DayWidget extends StatelessWidget {
   final DateTime date;

@@ -1,39 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_widgets_learning/calendar/day_widget.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-final pickedDateProvider =
-    StateProvider<DateTime>((ref) => removeTime(DateTime.now()));
+import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_widgets_learning/calendar/month_widget.dart';
+import 'package:flutter_widgets_learning/calendar/util.dart';
 
 class Calendar extends StatelessWidget {
-  List<Widget> _buildChildren(BuildContext context, DateTime date) {
-    List<Widget> list = [];
-    for (int i = 0; i < 10; i++) {
-      final newDate = removeTime(DateTime.now().add(Duration(days: i)));
-      list.add(DayWidget(
-        date: newDate,
-      ));
-    }
-    list.add(Text("$date"));
-    return list;
-  }
+  final DateTime initDate;
+
+  Calendar({
+    @required this.initDate,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final today = DateTime.now();
+    final item = 25;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(
-          child: Consumer(
-            builder: (context, watch, _) {
-              final date = watch(pickedDateProvider).state;
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: _buildChildren(context, date),
-              );
-            },
-          ),
+        backgroundColor: Colors.blueAccent,
+        body: Swiper(
+          index: item ~/ 2,
+          itemBuilder: (BuildContext context, int index) {
+            return MonthWidget(
+              dateInMonth: addMonths(today, index - item ~/ 2),
+            );
+          },
+          // autoplay: true,
+          itemCount: item,
+          scrollDirection: Axis.horizontal,
+          loop: false,
+          // pagination: SwiperPagination(alignment: Alignment.centerRight),
+          // control: SwiperControl(),
         ),
       ),
     );
