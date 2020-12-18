@@ -45,7 +45,7 @@ class MonthWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.all(20),
       child: Card(
         elevation: 0,

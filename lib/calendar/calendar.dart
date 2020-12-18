@@ -24,10 +24,13 @@ class Calendar extends StatelessWidget {
               dateInMonth: addMonths(today, index - item ~/ 2),
             );
           },
+          itemHeight: 500,
+          itemWidth: 600,
           // autoplay: true,
           itemCount: item,
           scrollDirection: Axis.horizontal,
           loop: false,
+          layout: SwiperLayout.TINDER,
           // pagination: SwiperPagination(alignment: Alignment.centerRight),
           // control: SwiperControl(),
         ),
