@@ -6,11 +6,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MonthWidget extends StatelessWidget {
-  final DateTime dateInMonth;
+  final DateTime firstDate;
+  final DateTime enableFrom;
+  final DateTime enableTo;
 
   MonthWidget({
-    @required this.dateInMonth,
-  });
+    @required this.firstDate,
+    this.enableFrom,
+    this.enableTo,
+  }) : assert(firstDate.isAtSameMomentAs(removeTime(firstDate)));
 
   final _yearTextStyle = TextStyle(fontSize: 30);
   final _monthTextStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 30);
@@ -19,8 +23,11 @@ class MonthWidget extends StatelessWidget {
     fontSize: 14,
     fontWeight: FontWeight.w700,
   );
-  DateTime get _firstDate => firstDateOf(dateInMonth);
-  DateTime get _lastDate => lastDateOf(dateInMonth);
+  DateTime get _firstDate => firstDate;
+  DateTime get _lastDate => lastDateOf(firstDate);
+
+  DateTime get _enableFrom => enableFrom ?? firstDate;
+  DateTime get _enableTo => enableTo ?? lastDateOf(firstDate);
 
   List<Widget> _buildChildren(BuildContext context) {
     final int daysOfPreviousMonth = _firstDate.weekday - DateTime.monday;
@@ -30,13 +37,14 @@ class MonthWidget extends StatelessWidget {
         _firstDate.subtract(Duration(days: daysOfPreviousMonth));
 
     for (int i = 0;
-        i < daysOfPreviousMonth + daysOf(dateInMonth) + daysOfNextMonth;
+        i < daysOfPreviousMonth + daysOf(firstDate) + daysOfNextMonth;
         i++) {
       final runDay = _startDate.add(Duration(days: i));
       list.add(
         DayWidget(
           date: runDay,
-          isEnabled: !runDay.isBefore(_firstDate) && !runDay.isAfter(_lastDate),
+          isEnabled:
+              !runDay.isBefore(_enableFrom) && !runDay.isAfter(_enableTo),
         ),
       );
     }

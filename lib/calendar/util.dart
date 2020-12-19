@@ -32,34 +32,23 @@ int daysOf(DateTime m) {
   return lastDateOf(m).day;
 }
 
-DateTime addMonths(DateTime m, int n) {
-  // year, month, day := d.YMD()
-  // iMonth := int(month) + n
-  // if iMonth <= 0 {
-  // 	iMonth -= _monthsOfYear
-  // }
-  // year += iMonth / _monthsOfYear
-  // // This formula to calculate the new month both case n > 0 and n < 0
-  // // iMonth%_monthsOfYear -> Move the negative value to [-11..0]
-  // // + _monthsOfYear -> Make sure positive
-  // // % _monthsOfYear -> Move the positive valid to [0..11]
-  // month = time.Month((iMonth%_monthsOfYear + _monthsOfYear) % _monthsOfYear)
-  // // Because a % 12 = [0..11] but the month should be [1..12]
-  // if month == 0 {
-  // 	month = time.December
-  // }
-  int month = m.month + n;
-  if (month <= 0) {
-    month -= DateTime.monthsPerYear;
-  }
-  int year = m.year + month ~/ DateTime.monthsPerYear;
-  month = (month % DateTime.monthsPerYear + DateTime.monthsPerYear) %
-      DateTime.monthsPerYear;
-  if (month == 0) {
-    month = DateTime.december;
-  }
+int countMonths(DateTime startDate, DateTime endDate) {
+  assert(!startDate.isAfter(endDate));
+  return (endDate.year - startDate.year) * DateTime.monthsPerYear +
+      (endDate.month - startDate.month) +
+      1;
+}
 
-  final maxDay = daysOf(DateTime(year, month));
+DateTime min(DateTime d1, DateTime d2) {
+  if (d1.isBefore(d2)) {
+    return d1;
+  }
+  return d2;
+}
 
-  return DateTime(year, month, maxDay < m.day ? maxDay : m.day);
+DateTime max(DateTime d1, DateTime d2) {
+  if (d1.isBefore(d2)) {
+    return d2;
+  }
+  return d1;
 }

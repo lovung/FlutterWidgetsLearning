@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widgets_learning/calendar/calendar.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:overlay_support/overlay_support.dart';
 
@@ -27,6 +28,10 @@ class MyApp extends StatelessWidget {
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Calendar(initDate: DateTime.now());
+    return Calendar(
+      initDate: DateTime(2020, 1, 13),
+      startDate: DateTime(2019, 1, 3),
+      endDate: DateTime(2020, 2, 10),
+    );
   }
 }
