@@ -31,7 +31,7 @@ class Home extends StatelessWidget {
     return Calendar(
       initDate: DateTime(2020, 1, 13),
       startDate: DateTime(2019, 1, 3),
-      endDate: DateTime(2020, 2, 10),
+      endDate: DateTime(2021, 2, 10),
     );
   }
 }

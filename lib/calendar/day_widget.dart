@@ -5,11 +5,15 @@ import 'package:flutter_widgets_learning/calendar/state.dart';
 class DayWidget extends StatelessWidget {
   final DateTime date;
   final bool isEnabled;
+  final bool isBlurred;
   final activeColor = Colors.orangeAccent;
+  final ValueChanged<DateTime> onPickedForBlurred;
 
   DayWidget({
     @required this.date,
     this.isEnabled = true,
+    this.isBlurred = false,
+    this.onPickedForBlurred,
   });
 
   @override
@@ -33,12 +37,15 @@ class DayWidget extends StatelessWidget {
               return;
             }
             context.read(pickedDateProvider).state = date;
+            if (isBlurred) {
+              onPickedForBlurred(date);
+            }
           },
           child: Center(
             child: Text(
               "${date.day}",
               style: TextStyle(
-                color: isEnabled ? Colors.black : Colors.black12,
+                color: isEnabled && !isBlurred ? Colors.black : Colors.black12,
                 fontWeight: FontWeight.w700,
                 fontSize: 14,
               ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widgets_learning/calendar/month_widget.dart';
 import 'package:flutter_widgets_learning/calendar/util.dart';
 
-class Calendar extends StatelessWidget {
+class Calendar extends StatefulWidget {
   final DateTime initDate;
   final DateTime startDate;
   final DateTime endDate;
@@ -19,32 +19,39 @@ class Calendar extends StatelessWidget {
   }
 
   @override
+  _CalendarState createState() => _CalendarState();
+}
+
+class _CalendarState extends State<Calendar> {
+  PageController calendarCltr;
+
+  @override
+  void initState() {
+    calendarCltr = PageController(
+      initialPage: countMonths(widget.startDate, widget.initDate) - 1,
+    );
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final index = countMonths(startDate, initDate) - 1;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey[300],
         body: PageView.builder(
-          controller: PageController(initialPage: index),
-          itemCount: countMonths(startDate, endDate),
+          controller: calendarCltr,
+          itemCount: countMonths(widget.startDate, widget.endDate),
           itemBuilder: (context, index) {
-            // final int newYM =
-            //     firstDateOf(startDate).year * DateTime.monthsPerYear +
-            //         firstDateOf(startDate).month +
-            //         index;
-            // final DateTime firstDateOfMonth = DateTime(
-            //     newYM ~/ DateTime.monthsPerYear,
-            //     newYM % DateTime.monthsPerYear);
-
             final firstDateOfMonth =
-                DateTime(startDate.year, startDate.month + index);
+                DateTime(widget.startDate.year, widget.startDate.month + index);
 
             return Column(
               children: [
                 MonthWidget(
                   firstDate: firstDateOfMonth,
-                  enableFrom: max(firstDateOfMonth, startDate),
-                  enableTo: min(endDate, lastDateOf(firstDateOfMonth)),
+                  enableFrom: widget.startDate,
+                  enableTo: widget.endDate,
+                  controller: calendarCltr,
                 ),
               ],
             );

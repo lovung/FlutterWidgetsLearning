@@ -9,11 +9,13 @@ class MonthWidget extends StatelessWidget {
   final DateTime firstDate;
   final DateTime enableFrom;
   final DateTime enableTo;
+  final PageController controller;
 
   MonthWidget({
     @required this.firstDate,
     this.enableFrom,
     this.enableTo,
+    @required this.controller,
   }) : assert(firstDate.isAtSameMomentAs(removeTime(firstDate)));
 
   final _yearTextStyle = TextStyle(fontSize: 30);
@@ -25,9 +27,6 @@ class MonthWidget extends StatelessWidget {
   );
   DateTime get _firstDate => firstDate;
   DateTime get _lastDate => lastDateOf(firstDate);
-
-  DateTime get _enableFrom => enableFrom ?? firstDate;
-  DateTime get _enableTo => enableTo ?? lastDateOf(firstDate);
 
   List<Widget> _buildChildren(BuildContext context) {
     final int daysOfPreviousMonth = _firstDate.weekday - DateTime.monday;
@@ -43,8 +42,21 @@ class MonthWidget extends StatelessWidget {
       list.add(
         DayWidget(
           date: runDay,
-          isEnabled:
-              !runDay.isBefore(_enableFrom) && !runDay.isAfter(_enableTo),
+          isEnabled: !runDay.isBefore(enableFrom) && !runDay.isAfter(enableTo),
+          isBlurred: runDay.isBefore(firstDate) || runDay.isAfter(_lastDate),
+          onPickedForBlurred: (DateTime v) {
+            if (v.isBefore(firstDate)) {
+              controller.previousPage(
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeIn,
+              );
+            } else if (v.isAfter(_lastDate)) {
+              controller.nextPage(
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeIn,
+              );
+            }
+          },
         ),
       );
     }
@@ -96,12 +108,14 @@ class MonthWidget extends StatelessWidget {
                 ),
               ),
               Divider(endIndent: 10, indent: 10),
-              Consumer(builder: (context, watch, child) {
-                watch(pickedDateProvider).state;
-                return Wrap(
-                  children: _buildChildren(context),
-                );
-              }),
+              Consumer(
+                builder: (context, watch, child) {
+                  watch(pickedDateProvider).state;
+                  return Wrap(
+                    children: _buildChildren(context),
+                  );
+                },
+              ),
             ],
           ),
         ),
