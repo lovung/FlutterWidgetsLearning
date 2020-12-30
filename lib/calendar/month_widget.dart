@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widgets_learning/calendar/day_widget.dart';
-import 'package:flutter_widgets_learning/calendar/state.dart';
 import 'package:flutter_widgets_learning/calendar/util.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'state.dart';
 
 class MonthWidget extends StatelessWidget {
   final DateTime firstDate;
@@ -110,7 +111,7 @@ class MonthWidget extends StatelessWidget {
               Divider(endIndent: 10, indent: 10),
               Consumer(
                 builder: (context, watch, child) {
-                  watch(pickedDateProvider).state;
+                  watch(pickedDateProvider.state);
                   return Wrap(
                     children: _buildChildren(context),
                   );

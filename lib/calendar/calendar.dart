@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widgets_learning/calendar/month_widget.dart';
 import 'package:flutter_widgets_learning/calendar/util.dart';
 
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'state.dart';
+
 class Calendar extends StatefulWidget {
   final DateTime initDate;
   final DateTime startDate;
@@ -30,6 +34,7 @@ class _CalendarState extends State<Calendar> {
     calendarCltr = PageController(
       initialPage: countMonths(widget.startDate, widget.initDate) - 1,
     );
+    context.read(pickedDateProvider).setDate(widget.initDate);
     super.initState();
   }
 
